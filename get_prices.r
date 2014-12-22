@@ -1,5 +1,5 @@
 
-pricings <- read.csv('totalpricings_cleaned.csv')
+pricings <- read.csv('totalpricings_lessduds2.csv')
 
 prows <- nrow(pricings[3])
 
@@ -50,7 +50,8 @@ gettotaldata <- function(ticker){
 readdf <- read.csv('pricedata.csv', header = TRUE)
 
 remove(adjpricesdf)
-for (tickernumber in c(1:2)){
+for (tickernumber in c(397:611)){
+  print(pricings[tickernumber,3])
   adjprices <- gettotaldata(pricings[tickernumber,3])
   if(exists("adjpricesdf")==FALSE){
     adjpricesdf <- cbind(readdf, adjprices)
@@ -58,7 +59,8 @@ for (tickernumber in c(1:2)){
   adjpricesdf <- cbind(adjpricesdf, adjprices)
   }
   print(pricings[tickernumber,3])
-  print(tickernumber)
+  Sys.sleep(1)
+  
 }
 write.csv(adjpricesdf, file = 'pricedata.csv', quote = FALSE)
 
