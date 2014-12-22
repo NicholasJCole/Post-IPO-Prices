@@ -30,7 +30,7 @@ getadjdata <- function(stockdata){
     if (nrow(stockdata['Adj.Close']) > 59){
         hist_days = stockdata['Adj.Close'][nrow(stockdata['Adj.Close']):(nrow(stockdata['Adj.Close'])-60),1]
     }else{
-        hist_days = stockdata['Adj.Close']
+        next
     }
 return(hist_days)
 }
@@ -47,15 +47,18 @@ gettotaldata <- function(ticker){
 
 #write.csv(df_hist_days, file ='testwrite1.csv', quote = FALSE)
 
-readdf <- read.csv('testwrite3.csv', header = TRUE)
+readdf <- read.csv('pricedata.csv', header = TRUE)
 
 remove(adjpricesdf)
-for (tickernumber in c(9:10)){
+for (tickernumber in c(1:2)){
   adjprices <- gettotaldata(pricings[tickernumber,3])
-    if (exists('adjpricesdf')==FALSE){
-      adjpricesdf <- adjprices
-    }else{
-      adjpricesdf <- cbind(adjpricesdf, adjprices)
-    }
-  write.csv(adjpricesdf, file = 'testwrite3.csv', quote = FALSE)
+  if(exists("adjpricesdf")==FALSE){
+    adjpricesdf <- cbind(readdf, adjprices)
+  }else{
+  adjpricesdf <- cbind(adjpricesdf, adjprices)
+  }
+  print(pricings[tickernumber,3])
+  print(tickernumber)
 }
+write.csv(adjpricesdf, file = 'pricedata.csv', quote = FALSE)
+
